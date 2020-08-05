@@ -8,6 +8,11 @@ DUMPS_FILE = 'dumpsLocation.txt'
 def isFolderSet():
 	with open(DUMPS_FILE,'r') as dumpsLocation:
 		return dumpsLocation.read(1)
+		
+def isFolderCorrect():
+	with open(DUMPS_FILE,'r') as dumpsLocation:
+		dumpsFolder = dumpsLocation.readline()
+		return glob.glob(dumpsFolder + '/skills*.txt')
 
 def askForFolder():
 	root = tk.Tk()

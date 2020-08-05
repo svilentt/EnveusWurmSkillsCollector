@@ -149,20 +149,25 @@ def extractSkillsFromFile(fullFilePath):
 					skills[skillName] = skillValue
 	return list(skills.values())
 
-if not dumpsLocationHandler.isFolderSet():
+if not dumpsLocationHandler.isFolderSet() or not dumpsLocationHandler.isFolderCorrect():
 	print('Asking for dumps folder location...')
 	dumpsLocationHandler.askForFolder()
-	
-print('Getting the latest dump...')				
-latestDump = dumpsLocationHandler.getLatestDumpFile()
 
-print('Fetching data...')
-playerName = extractPlayerNameFromFile(latestDump)
-playerData = extractSkillsFromFile(latestDump)
+if not dumpsLocationHandler.isFolderCorrect():
+	print('The selected folder is not correct or empty. Please restart the application and select a folder again.')
+	print("Press enter to exit the console...")
+	input()
+else:	
+	print('Getting the latest dump...')				
+	latestDump = dumpsLocationHandler.getLatestDumpFile()
 
-print('Updating remote spreadsheet...')
-if excelSheetUpdater.updateSheet(playerName, playerData):
-	print('Done')
+	print('Fetching data...')
+	playerName = extractPlayerNameFromFile(latestDump)
+	playerData = extractSkillsFromFile(latestDump)
+
+	print('Updating remote spreadsheet...')
+	if excelSheetUpdater.updateSheet(playerName, playerData):
+		print('Update succeeded!')
 	
-print("Press enter to exit the console...")
-input()	
+	print("Press enter to exit the console...")
+	input()	
